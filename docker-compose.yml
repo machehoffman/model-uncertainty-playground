@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/home/developer/app
+      - ~/.gitconfig:/home/developer/.gitconfig:ro
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    ports:
+      - "8888:8888"  # For Jupyter if needed
+    entrypoint: ["/home/developer/app/docker-entrypoint.sh"]
+    command: /bin/bash
+    tty: true
+    stdin_open: true 
