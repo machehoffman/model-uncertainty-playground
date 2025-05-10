@@ -85,7 +85,13 @@ memory-bank/.cache/
 priveteReadME.md
 
 # misc
-misc/
+misc/cipo_demo.csv
+misc/inference_results.csv
+misc/inference_results_scaled.csv
+
+misc/cipo_demo/
+misc/report.png
+misc/*.py
 
 # debug images
 debug_images/
