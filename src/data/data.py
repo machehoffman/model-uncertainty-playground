@@ -13,8 +13,10 @@ def read_image(image_path, bgr2rgb=False):
     return image
 
 class ImageDataset(Dataset):
-    def __init__(self, annotations_file, img_dir, transforms):
-        self.df = pd.read_csv(annotations_file)
+    def __init__(self, annotations_file, 
+                 img_dir, 
+                 transforms):
+        self.df = pd.read_csv(annotations_file).sample(frac=0.1)
         self.img_dir = img_dir
         self.transforms = transforms
 
@@ -23,14 +25,16 @@ class ImageDataset(Dataset):
 
     def __getitem__(self, idx):
         sample = self.df.iloc[idx]
-        image = read_image(os.path.join(self.img_dir, sample["image_name"]))
+        image_path = os.path.join(self.img_dir, sample["image_name"])
+        image = read_image(image_path)
         label = sample["class"] == "Green"
         image = apply_transform(image, self.transforms)
-        return image, label
+        return image, label, image_path
     
-    def debug(self, idx):
+    def save_debug_image(self, idx):
         sample = self.df.iloc[idx]
-        image = read_image(os.path.join(self.img_dir, sample["image_name"]))
+        image_path = os.path.join(self.img_dir, sample["image_name"])
+        image = read_image(image_path)
         label = sample["class"] == "Green"
         
         # Create debug directory if it doesn't exist
@@ -45,7 +49,8 @@ class ImageDataset(Dataset):
 if __name__ == "__main__":
     dataset = ImageDataset(annotations_file="misc/demo_cipo.csv",
                             img_dir="misc/cipo_demo/",
-                            transforms=transforms)
+                            transforms=transforms,
+                            debug=True)
     print(len(dataset))
-    dataset.debug(0)
+    dataset.save_debug_image(0)
     a=1

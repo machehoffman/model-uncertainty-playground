@@ -16,6 +16,7 @@ RUN apt-get update && apt-get install -y \
 # Create non-root user
 RUN useradd -m -s /bin/bash developer
 WORKDIR /home/developer/app
+ENV PYTHONPATH="/home/developer/app:${PYTHONPATH}"
 RUN chown -R developer:developer /home/developer/app
 
 # Switch to non-root user
