@@ -7,6 +7,8 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.calibration import calibration_curve
 from scipy.optimize import minimize
 from temperature_scaling import apply_temperature_scaling
+from isotonic import apply_isotonic_calibration
+from platt import apply_platt_scaling
 from ece import calculate_ece
 
 
@@ -108,6 +110,16 @@ Recommendations:
 
 
 if __name__ == "__main__":
+
+    # temperature scaling       
     results_df = pd.read_csv("misc/inference_results.csv")
     df_scaled, best_temp = apply_temperature_scaling(results_df)
-    generate_comparison_pdf(results_df, df_scaled, "Model", "Dataset", "misc/report_original.pdf", best_temp)
+    generate_comparison_pdf(results_df, df_scaled, "Model", "Dataset", "misc/report_ece.pdf", best_temp)
+
+    # isotonic scaling
+    df_isotonic = apply_isotonic_calibration(results_df)
+    generate_comparison_pdf(results_df, df_isotonic, "Model", "Dataset", "misc/report_isotonic.pdf", 1.0)
+
+    # platt scaling 
+    df_platt = apply_platt_scaling(results_df)
+    generate_comparison_pdf(results_df, df_platt, "Model", "Dataset", "misc/report_platt.pdf", 1.0)
