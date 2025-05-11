@@ -114,12 +114,12 @@ if __name__ == "__main__":
     # temperature scaling       
     results_df = pd.read_csv("misc/inference_results.csv")
     df_scaled, best_temp = apply_temperature_scaling(results_df)
-    generate_comparison_pdf(results_df, df_scaled, "Model", "Dataset", "misc/report_ece.pdf", best_temp)
+    generate_comparison_pdf(results_df, df_scaled, "Model", "Dataset", "misc/report_ece1.pdf", best_temp)
 
     # isotonic scaling
     df_isotonic = apply_isotonic_calibration(results_df)
-    generate_comparison_pdf(results_df, df_isotonic, "Model", "Dataset", "misc/report_isotonic.pdf", 1.0)
+    generate_comparison_pdf(results_df, df_isotonic, "Model", "Dataset", "misc/report_isotonic1.pdf", 1.0)
 
     # platt scaling 
     df_platt = apply_platt_scaling(results_df)
-    generate_comparison_pdf(results_df, df_platt, "Model", "Dataset", "misc/report_platt.pdf", 1.0)
+    generate_comparison_pdf(results_df, df_platt, "Model", "Dataset", "misc/report_platt1.pdf", 1.0)
